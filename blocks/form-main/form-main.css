@@ -1,0 +1,27 @@
+.form-main {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-login {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-login__login-error {
+    visibility: hidden;
+    font-size: 14px;
+    color: #f13851;
+}
+
+.form-login__pass-error {
+    visibility: hidden;
+    font-size: 14px;
+    color: #f13851;
+}
+
+.form-login__error-active {
+    visibility: visible;
+}
