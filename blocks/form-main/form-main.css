@@ -25,3 +25,25 @@
 .form-login__error-active {
     visibility: visible;
 }
+
+.form-main__register {
+    margin: 0;
+    margin-top: 8px;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.form-register {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-register__phone {
+    margin-top: 18px;
+}
+
+.form-login__pass2 {
+    margin-top: 18px;
+}

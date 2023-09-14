@@ -10,6 +10,13 @@
 <body class="body">
 <?php
 session_start();
+
+//В случае активной авторизации переход на страницу logout
+if (isset($_SESSION['user_id'])) {
+    header('Location: logout.php');
+    exit();
+}
+
 require_once(__DIR__ . '/Dbase.php');
 
 $currentPage = 'login';
@@ -21,7 +28,7 @@ $userObj['login'] = $_POST['login'] ?? '';
 $userObj['password'] = $_POST['password'] ?? '';
 if ($userObj['login'] !== '' && $userObj['password'] !== '') {
     //Запрос в БД пользователя $userObj['login']
-    $userTest = Dbase::checkUser($userObj['login']);
+    $userTest = Dbase::checkUserEmail($userObj['login']);
     if (!$userTest) {
         //Если такого пользователя в БД не существует
         $loginError = true;
@@ -50,6 +57,7 @@ require_once(__DIR__ . '/header.php');
             <span class="form-login__pass-error <?= $passError ? 'form-login__error-active' : '' ?>">Введите правильный пароль</span>
             <button class="form-login__button" type="submit">Войти</button>
         </form>
+        <a href="./register.php" class="form-main__register">или Зарегистрироваться</a>
     </section>
 
 </main>

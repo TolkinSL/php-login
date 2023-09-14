@@ -13,6 +13,8 @@ session_start();
 //var_dump($_SESSION['user_id']);
 $currentPage = 'profile';
 require_once(__DIR__ . '/header.php');
+
+//В случае отсутствия авторизации переход на страницу login
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
