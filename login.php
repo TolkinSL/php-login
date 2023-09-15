@@ -23,22 +23,24 @@ $currentPage = 'login';
 $loginError = false;
 $passError = false;
 
-$userObj = [];
-$userObj['login'] = $_POST['login'] ?? '';
-$userObj['password'] = $_POST['password'] ?? '';
-if ($userObj['login'] !== '' && $userObj['password'] !== '') {
-    //Запрос в БД пользователя $userObj['login']
-    $userTest = Dbase::checkUserEmail($userObj['login']);
-    if (!$userTest) {
-        //Если такого пользователя в БД не существует
-        $loginError = true;
-    } else if ($userTest['pass_hash'] !== $userObj['password']) {
-        //Если пароль не правильный
-        $passError = true;
-    } else if ($userTest['pass_hash'] === $userObj['password']) {
-        $_SESSION['user_id'] = $userObj['login'];
-        header('Location: ./profile.php');
-        exit();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userObj = [];
+    $userObj['login'] = $_POST['login'] ?? '';
+    $userObj['password'] = $_POST['password'] ?? '';
+    if ($userObj['login'] !== '' && $userObj['password'] !== '') {
+        //Запрос в БД пользователя $userObj['login']
+        $userTest = Dbase::checkUserEmail($userObj['login']);
+        if (!$userTest) {
+            //Если такого пользователя в БД не существует
+            $loginError = true;
+        } else if ($userTest['pass_hash'] !== $userObj['password']) {
+            //Если пароль не правильный
+            $passError = true;
+        } else if ($userTest['pass_hash'] === $userObj['password']) {
+            $_SESSION['user_id'] = $userTest['id'];
+            header('Location: ./profile.php');
+            exit();
+        }
     }
 }
 //var_dump($userTest);
@@ -50,7 +52,8 @@ require_once(__DIR__ . '/header.php');
         <h1>Войти в систему</h1>
         <form method="post" class="form-login">
             <input class="form-login__input form-login__login" type="text" name="login"
-                   placeholder="login" required="required">
+                   placeholder="login" required="required"
+                   value="<?php echo isset($_POST['login']) ? $_POST['login'] : ''; ?>">
             <span class="form-login__login-error <?= $loginError ? 'form-login__error-active' : '' ?>">Пользователь не зарегестрирован</span>
             <input class="form-login__input form-login__pass" type="text" name="password"
                    placeholder="password" required="required">

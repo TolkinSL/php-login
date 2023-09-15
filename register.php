@@ -30,30 +30,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userObj['name'] = $_POST['name'] ?? '';
     $userObj['phone'] = $_POST['phone'] ?? '';
     $userObj['email'] = $_POST['email'] ?? '';
-    $userObj['password'] = $_POST['password'] ?? '';
-    $userObj['password2'] = $_POST['password2'] ?? '';
+    $userObj['pass_hash'] = $_POST['password'] ?? '';
+    $userObj['pass_hash2'] = $_POST['password2'] ?? '';
 
-    if ($userObj['password'] !== $userObj['password2']) {
+    if ($userObj['pass_hash'] !== $userObj['pass_hash2']) {
         $passError = true;
     }
 
-    $userTest = Dbase::checkUserPhone($userObj['phone']);
-    if ($userTest) {
+    $phoneTest = Dbase::checkUserPhone($userObj['phone']);
+    var_dump($phoneTest);
+    if ($phoneTest) {
         //Если такой телефон уже существует
         $phoneError = true;
     }
 
-    $userTest = Dbase::checkUserEmail($userObj['email']);
-    if ($userTest) {
+    $emailTest = Dbase::checkUserEmail($userObj['email']);
+    var_dump($emailTest);
+    if ($emailTest) {
         //Если такой email уже существует
         $emailError = true;
     }
 
-//        } else if ($userTest['pass_hash'] === $userObj['password']) {
-//            $_SESSION['user_id'] = $userObj['login'];
-//            header('Location: ./profile.php');
-//            exit();
-//        }
+    if (!$phoneError && !$emailError && !$passError) {
+        Dbase::registerUser($userObj);
+        $userTest = Dbase::checkUserEmail($userObj['email']);
+        $_SESSION['user_id'] = $userTest['id'];
+        header('Location: ./profile.php');
+        exit();
+    }
 
 }
 //var_dump($userTest);
@@ -65,13 +69,16 @@ require_once(__DIR__ . '/header.php');
         <h1>Введите свои данные</h1>
         <form method="post" class="form-register">
             <input class="form-register__input form-register__name" type="text" name="name"
-                   placeholder="Введите ФИО" required="required">
+                   placeholder="Введите ФИО" required="required"
+                   value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>">
             <input class="form-register__input form-register__phone" type="text" name="phone"
-                   placeholder="Введите телефон" required="required">
+                   placeholder="Введите телефон" required="required"
+                   value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : ''; ?>">
             <span class="form-register__phone-error <?= $phoneError ? 'form-login__error-active' : '' ?>">Такой телефон уже зарегестрирован</span>
 
             <input class="form-register__input form-register__email" type="text" name="email"
-                   placeholder="Введите email" required="required">
+                   placeholder="Введите email" required="required"
+                   value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
             <span class="form-register__email-error <?= $emailError ? 'form-login__error-active' : '' ?>">Такой email уже зарегестрирован</span>
 
             <input class="form-register__input form-login__pass" type="text" name="password"

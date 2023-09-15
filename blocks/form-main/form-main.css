@@ -1,5 +1,6 @@
 .form-main {
     margin: 0 auto;
+    margin-left: 8px;
     display: flex;
     flex-direction: column;
 }
@@ -22,9 +23,6 @@
     color: #f13851;
 }
 
-.form-login__error-active {
-    visibility: visible;
-}
 
 .form-main__register {
     margin: 0;
@@ -46,4 +44,26 @@
 
 .form-login__pass2 {
     margin-top: 18px;
+}
+
+.form-register__phone-error {
+    visibility: hidden;
+    font-size: 14px;
+    color: #f13851;
+}
+
+.form-register__email-error {
+    visibility: hidden;
+    font-size: 14px;
+    color: #f13851;
+}
+
+.form-register__pass2-error {
+    visibility: hidden;
+    font-size: 14px;
+    color: #f13851;
+}
+
+.form-login__error-active {
+    visibility: visible;
 }
